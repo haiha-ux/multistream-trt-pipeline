@@ -1,6 +1,6 @@
 # multistream-trt-pipeline
 
-Several RTSP cameras in, tracked detections out, on one GPU: GStreamer decode, one batched TensorRT FP16 YOLO11n call across all streams, one ByteTrack instance per stream. The point of the repo is the benchmark: per-stage latency, end-to-end latency and aggregate FPS for N = 1 ... 12 streams, measured with the real RTSP path (not files).
+Several RTSP cameras in, tracked detections out, on one GPU. The pipeline does GStreamer decode, one batched TensorRT FP16 YOLO11n call across all streams, and one ByteTrack instance per stream. The main output is the benchmark: per-stage latency, end-to-end latency and aggregate FPS for N = 1 ... 12 streams, measured over the real RTSP path (not files).
 
 ![4 streams, boxes and track IDs, heads blurred](docs/preview.gif)
 
@@ -21,13 +21,13 @@ rtspsrc -> rtph264depay -> h264parse -> nvh264dec (NVDEC) -> NV12 appsink   [sou
                       per-stream ByteTrack (CPU worker thread, overlaps next batch)   [pipeline.py]
 ```
 
-Cameras are modelled as sources that never wait: if inference is slower than the cameras, old frames are dropped (newest-frame-wins), so latency stays bounded and the drop rate shows saturation.
+Cameras are modelled as sources that never wait. If inference is slower than the cameras, old frames are dropped (newest-frame-wins), so latency stays bounded and the drop rate shows saturation.
 
 ## Results
 
-Shared **NVIDIA GB10 (aarch64, desktop-class Blackwell GPU), not a Jetson**; 20 CPU cores, TensorRT 10.16, GStreamer 1.24. The GPU was **already ~88% utilised by other jobs** before the pipeline started (`gpu_util_before_pct` in `results/bench.json`), so absolute numbers are noisy and only comparable relative to each other. 1080p30 H.264 sources, YOLO11n 640x640 FP16, person class, conf 0.25, 30 s per point after a 6 s warm-up, single run per point (no repeats, so treat differences of a few ms as noise).
+The GPU is a shared NVIDIA GB10 (aarch64, desktop-class Blackwell GPU), not a Jetson. The machine has 20 CPU cores, TensorRT 10.16 and GStreamer 1.24. The GPU was already about 88% utilised by other jobs before the pipeline started (`gpu_util_before_pct` in `results/bench.json`), so absolute numbers are noisy and only comparable relative to each other. Sources are 1080p30 H.264, the model is YOLO11n 640x640 FP16, person class, conf 0.25. Each point runs 30 s after a 6 s warm-up, once, with no repeats, so treat differences of a few ms as noise.
 
-Latency is in ms, median / p95. Batch stages are per batch, not per frame. "End-to-end" runs from the moment an H.264 access unit reaches the pipeline (after RTSP/RTP depayload) until that frame's tracks are computed. It does **not** include camera exposure, camera encoding, or the network.
+Latency is in ms, median / p95. Batch stages are per batch, not per frame. End-to-end runs from the moment an H.264 access unit reaches the pipeline (after RTSP/RTP depayload) until that frame's tracks are computed. It does not include camera exposure, camera encoding, or the network.
 
 | Streams | Decoder | Agg. FPS | Dropped | Mean batch | Decode | Wait for batch | Preproc | Infer | NMS | Track | **End-to-end** | CPU cores (proc) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -44,19 +44,22 @@ Raw data: `results/bench.json`, `results/bench.csv`. Plot:
 
 ![throughput and latency](results/bench.png)
 
-What the numbers say:
-- Real-time (all 30 fps of every camera processed) holds up to **4 streams**; at 6 streams ~10% of frames are dropped, and throughput flattens around 220-235 fps from 8 streams on. The cap is not one stage: preprocessing, inference and tracking all grow with batch size, on a GPU that other jobs are also using.
-- **NVDEC decode shows ~35 ms vs ~8 ms for CPU decode.** That is the time from H.264 data entering the decoder to the frame reaching the appsink. I did not investigate the cause (decoder output buffering/reordering delay in `nvh264dec` + `cudadownload` is my guess, unverified). At 1080p30 with up to 8 streams the CPU decoder at one thread per stream was fine and gave lower end-to-end latency; NVDEC's advantage here would be CPU load, which stays low either way (<4 cores for the whole process). On a CPU-limited edge box the trade-off could flip. Both are measured, neither is tuned.
-- Tracking is per-frame ~1-2 ms on CPU but is serialised on one worker thread, so it becomes the largest stage at 12 streams.
-- GPU utilisation is not informative here: it reads 92-95% in every run because the GPU was already busy before the pipeline started. Per-stage times are the usable signal. CPU is the `psutil` CPU time of this process (cores used, decode threads included).
-- Per-stage times are taken with a CUDA sync after each stage, which costs a little throughput versus an unsynchronised pipeline.
+What the numbers show:
 
-## How this maps to Jetson Orin (approach, not measured)
+- Real-time (all 30 fps of every camera processed) holds up to 4 streams. At 6 streams about 10% of frames are dropped, and throughput flattens around 220-235 fps from 8 streams on. The cap is not one stage: preprocessing, inference and tracking all grow with batch size, on a GPU that other jobs are also using.
+- NVDEC decode takes about 35 ms against about 8 ms for CPU decode. That is the time from H.264 data entering the decoder to the frame reaching the appsink. I did not investigate the cause. My guess, unverified, is decoder output buffering or reordering delay in `nvh264dec` + `cudadownload`. At 1080p30 with up to 8 streams the CPU decoder at one thread per stream was fine and gave lower end-to-end latency. NVDEC's advantage here would be CPU load, which stays low either way (under 4 cores for the whole process). On a CPU-limited edge box the trade-off could flip. Both are measured and neither is tuned.
+- Tracking costs about 1-2 ms per frame on CPU but is serialised on one worker thread, so it becomes the largest stage at 12 streams.
+- GPU utilisation is not informative here. It reads 92-95% in every run because the GPU was already busy before the pipeline started. Per-stage times are the usable signal. CPU is the `psutil` CPU time of this process (cores used, decode threads included).
+- Per-stage times are taken with a CUDA sync after each stage, which costs a little throughput compared with an unsynchronised pipeline.
 
-- Rebuild the engine on the device (`build_engine.py` works unchanged apart from paths); engines are not portable across GPU architectures or TensorRT versions.
-- Swap `nvh264dec ! cudadownload` for `nvv4l2decoder` (NVDEC via V4L2) and keep the frames in NVMM memory, with `nvvidconv`/VIC doing resize and colour conversion instead of the torch kernels in `preprocess_nv12`; that frees the GPU for inference.
-- Lock clocks (`nvpmodel`, `jetson_clocks`), then re-run `bench.py`. Expect the saturation point to be at fewer streams than here; the per-stage breakdown shows where to spend effort.
-- Consider DLA for the detector and INT8 with calibration frames from the real cameras (see `yolo-tensorrt-edge` for an INT8 experiment on this model).
+## Mapping to Jetson Orin
+
+This is an approach, not measured.
+
+- Rebuild the engine on the device. `build_engine.py` works unchanged apart from paths, because engines are not portable across GPU architectures or TensorRT versions.
+- Swap `nvh264dec ! cudadownload` for `nvv4l2decoder` (NVDEC via V4L2) and keep the frames in NVMM memory, with `nvvidconv`/VIC doing resize and colour conversion instead of the torch kernels in `preprocess_nv12`. That frees the GPU for inference.
+- Lock clocks (`nvpmodel`, `jetson_clocks`), then re-run `bench.py`. I expect the saturation point at fewer streams than here, and the per-stage breakdown shows where to spend effort.
+- Consider DLA for the detector, and INT8 with calibration frames from the real cameras (see `yolo-tensorrt-edge` for an INT8 experiment on this model).
 
 ## Reproduce
 
@@ -74,12 +77,12 @@ Use `--urls rtsp://... rtsp://...` to point the pipeline at real cameras.
 
 ## Limitations
 
-- The "cameras" are a local mediamtx re-publishing a few looping MOT17 clips (`ffmpeg -c copy`): no network jitter, no packet loss, identical GOP structure. Several streams share the same 4 clips (offset in time), so streams are not fully independent content.
-- Pedestrian clips encoded from MOT17 JPEG frames, not real camera footage. No accuracy evaluation here; detector quality is whatever YOLO11n gives (see `object-tracking-bench` for tracking metrics on MOT17).
-- Shared GPU and a single run per point; no repeats or confidence intervals.
-- Latency excludes everything before the RTP packet arrives. Input is H.264 only; frame size changes mid-stream and padded NV12 strides raise an error rather than being handled.
-- Fixed 640 input: small people in 1080p scenes are missed more than at higher resolution.
+- The "cameras" are a local mediamtx re-publishing a few looping MOT17 clips (`ffmpeg -c copy`). There is no network jitter, no packet loss, and the GOP structure is identical. Several streams share the same 4 clips (offset in time), so streams are not fully independent content.
+- The clips are pedestrian footage encoded from MOT17 JPEG frames, not real camera footage. There is no accuracy evaluation here. Detector quality is whatever YOLO11n gives (see `object-tracking-bench` for tracking metrics on MOT17).
+- The GPU is shared and each point is a single run, with no repeats or confidence intervals.
+- Latency excludes everything before the RTP packet arrives. Input is H.264 only. Frame size changes mid-stream and padded NV12 strides raise an error rather than being handled.
+- The input is fixed at 640, so small people in 1080p scenes are missed more than at higher resolution.
 
 ## License
 
-MIT for the code. MOT17 is CC BY-NC-SA 3.0 (non-commercial); clips are not included in the repo. YOLO11 weights are AGPL-3.0 (Ultralytics). Author: Ha Phan Thanh Hai.
+MIT for the code. MOT17 is CC BY-NC-SA 3.0 (non-commercial), and the clips are not included in the repo. YOLO11 weights are AGPL-3.0 (Ultralytics). Author: Ha Phan Thanh Hai.
