@@ -1,0 +1,11 @@
+ultralytics>=8.4      # ONNX export + ByteTrack
+torch                 # CUDA build
+torchvision
+tensorrt              # 10.x
+numpy
+opencv-python         # preview only
+psutil
+matplotlib
+lapx                  # tracker assignment
+pytest
+# system: GStreamer 1.24+ with python3-gi, gst-plugins-bad (nvcodec), gst-libav, ffmpeg

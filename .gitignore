@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+bin/
+data/clips/
+engines/
+weights/
+*.pyc
+.pytest_cache/
+auto.crt
+auto.key
+*.crt
+*.key

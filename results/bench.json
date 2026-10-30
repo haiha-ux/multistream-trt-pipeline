@@ -1,0 +1,546 @@
+{
+ "gpu_util_before_pct": 88.125,
+ "source_fps": 30,
+ "runs": [
+  {
+   "streams": 1,
+   "decoder": "nv",
+   "seconds": 30.0,
+   "engine_max_batch": 16,
+   "aggregate_fps": 29.937768921873417,
+   "per_stream_fps_min": 29.937768921873417,
+   "per_stream_fps_mean": 29.937768921873417,
+   "arrived_fps": 30.00437129989761,
+   "decoded_fps": 30.00437129989761,
+   "dropped_pct": 0.2219755826859071,
+   "batch_size_mean": 1.0,
+   "batches_per_s": 29.937768921873417,
+   "latency_ms": {
+    "decode": {
+     "median": 35.16212300746702,
+     "p95": 37.62543420307338,
+     "n": 899
+    },
+    "queue_wait": {
+     "median": 0.6662719970336184,
+     "p95": 2.2234083022340196,
+     "n": 899
+    },
+    "preprocess_per_batch": {
+     "median": 4.926074994727969,
+     "p95": 7.130436893203295,
+     "n": 899
+    },
+    "infer_per_batch": {
+     "median": 3.584475998650305,
+     "p95": 4.97049249970587,
+     "n": 899
+    },
+    "postprocess_nms_per_batch": {
+     "median": 5.545401989365928,
+     "p95": 7.980057498207315,
+     "n": 899
+    },
+    "track_per_batch": {
+     "median": 1.7803500086301938,
+     "p95": 3.723679995164274,
+     "n": 899
+    },
+    "track_per_frame": {
+     "median": 1.6003510099835694,
+     "p95": 3.3978417908656375,
+     "n": 899
+    },
+    "batch_total": {
+     "median": 16.52907198877074,
+     "p95": 20.852802203444295,
+     "n": 899
+    },
+    "end_to_end": {
+     "median": 52.78901800920721,
+     "p95": 58.38738100428599,
+     "n": 899
+    }
+   },
+   "gpu_util_pct": {
+    "mean": 91.60655737704919,
+    "max": 96.0
+   },
+   "cpu_cores_process": 0.604,
+   "cpu_util_system_pct": 18.1
+  },
+  {
+   "streams": 2,
+   "decoder": "nv",
+   "seconds": 30.0,
+   "engine_max_batch": 16,
+   "aggregate_fps": 59.93288378874504,
+   "per_stream_fps_min": 29.933108811063985,
+   "per_stream_fps_mean": 29.96644189437252,
+   "arrived_fps": 59.999549955362106,
+   "decoded_fps": 60.03288303867064,
+   "dropped_pct": 0.11111111111110628,
+   "batch_size_mean": 1.0198525241066365,
+   "batches_per_s": 58.76622587294633,
+   "latency_ms": {
+    "decode": {
+     "median": 35.105954004393425,
+     "p95": 37.86848345043836,
+     "n": 1798
+    },
+    "queue_wait": {
+     "median": 1.0864154974115081,
+     "p95": 8.61901814059819,
+     "n": 1798
+    },
+    "preprocess_per_batch": {
+     "median": 4.6227490092860535,
+     "p95": 7.227515007252805,
+     "n": 1763
+    },
+    "infer_per_batch": {
+     "median": 3.4971809946000576,
+     "p95": 3.97122100694105,
+     "n": 1763
+    },
+    "postprocess_nms_per_batch": {
+     "median": 5.096124004921876,
+     "p95": 5.986096800188534,
+     "n": 1763
+    },
+    "track_per_batch": {
+     "median": 2.2586230043089017,
+     "p95": 4.32379780540941,
+     "n": 1763
+    },
+    "track_per_frame": {
+     "median": 2.0442950044525787,
+     "p95": 3.936931598582305,
+     "n": 1798
+    },
+    "batch_total": {
+     "median": 15.935397997964174,
+     "p95": 20.009006500185933,
+     "n": 1763
+    },
+    "end_to_end": {
+     "median": 52.17377349617891,
+     "p95": 62.23523765729623,
+     "n": 1798
+    }
+   },
+   "gpu_util_pct": {
+    "mean": 93.9,
+    "max": 95.0
+   },
+   "cpu_cores_process": 1.087,
+   "cpu_util_system_pct": 16.4
+  },
+  {
+   "streams": 4,
+   "decoder": "nv",
+   "seconds": 30.0,
+   "engine_max_batch": 16,
+   "aggregate_fps": 118.59443879679947,
+   "per_stream_fps_min": 29.023814608601384,
+   "per_stream_fps_mean": 29.648609699199863,
+   "arrived_fps": 120.02730220457198,
+   "decoded_fps": 120.02730220457198,
+   "dropped_pct": 1.1937812326485275,
+   "batch_size_mean": 1.9248242293131423,
+   "batches_per_s": 61.6131265342181,
+   "latency_ms": {
+    "decode": {
+     "median": 35.235332004958764,
+     "p95": 37.82655219984008,
+     "n": 3559
+    },
+    "queue_wait": {
+     "median": 5.316302995197475,
+     "p95": 17.172444699099287,
+     "n": 3559
+    },
+    "preprocess_per_batch": {
+     "median": 6.829694990301505,
+     "p95": 11.313466596766375,
+     "n": 1849
+    },
+    "infer_per_batch": {
+     "median": 3.9138220017775893,
+     "p95": 7.301591007853858,
+     "n": 1849
+    },
+    "postprocess_nms_per_batch": {
+     "median": 5.203487002290785,
+     "p95": 6.191444804426283,
+     "n": 1849
+    },
+    "track_per_batch": {
+     "median": 3.4115669986931607,
+     "p95": 8.228062003036024,
+     "n": 1849
+    },
+    "track_per_frame": {
+     "median": 1.7425120022380725,
+     "p95": 3.9572996960487212,
+     "n": 3559
+    },
+    "batch_total": {
+     "median": 18.879818002460524,
+     "p95": 29.754152605892155,
+     "n": 1849
+    },
+    "end_to_end": {
+     "median": 62.48671900539193,
+     "p95": 79.52329188992735,
+     "n": 3559
+    }
+   },
+   "gpu_util_pct": {
+    "mean": 93.86666666666666,
+    "max": 96.0
+   },
+   "cpu_cores_process": 1.511,
+   "cpu_util_system_pct": 18.7
+  },
+  {
+   "streams": 6,
+   "decoder": "nv",
+   "seconds": 30.0,
+   "engine_max_batch": 16,
+   "aggregate_fps": 175.49635590051062,
+   "per_stream_fps_min": 28.805379099419675,
+   "per_stream_fps_mean": 29.2493926500851,
+   "arrived_fps": 195.0107514522562,
+   "decoded_fps": 194.81094535445675,
+   "dropped_pct": 10.006830601092897,
+   "batch_size_mean": 4.001518602885345,
+   "batches_per_s": 43.8574384669777,
+   "latency_ms": {
+    "decode": {
+     "median": 35.36127750703599,
+     "p95": 38.29182729750755,
+     "n": 5270
+    },
+    "queue_wait": {
+     "median": 8.767520506808069,
+     "p95": 24.82739774786751,
+     "n": 5270
+    },
+    "preprocess_per_batch": {
+     "median": 9.897312993416563,
+     "p95": 18.098900403128937,
+     "n": 1317
+    },
+    "infer_per_batch": {
+     "median": 7.239136000862345,
+     "p95": 12.067827998544091,
+     "n": 1317
+    },
+    "postprocess_nms_per_batch": {
+     "median": 5.685441006789915,
+     "p95": 8.024334596120752,
+     "n": 1317
+    },
+    "track_per_batch": {
+     "median": 7.437681008013897,
+     "p95": 17.51266520586796,
+     "n": 1317
+    },
+    "track_per_frame": {
+     "median": 1.82895999023458,
+     "p95": 4.300517005322036,
+     "n": 5270
+    },
+    "batch_total": {
+     "median": 29.742576996795833,
+     "p95": 50.01442459761165,
+     "n": 1317
+    },
+    "end_to_end": {
+     "median": 79.96252349403221,
+     "p95": 107.29613035073271,
+     "n": 5270
+    }
+   },
+   "gpu_util_pct": {
+    "mean": 94.08196721311475,
+    "max": 96.0
+   },
+   "cpu_cores_process": 1.929,
+   "cpu_util_system_pct": 21.6
+  },
+  {
+   "streams": 8,
+   "decoder": "nv",
+   "seconds": 30.0,
+   "engine_max_batch": 16,
+   "aggregate_fps": 217.92797863177404,
+   "per_stream_fps_min": 26.39531412698655,
+   "per_stream_fps_mean": 27.240997328971755,
+   "arrived_fps": 272.88488897950236,
+   "decoded_fps": 272.25166805978927,
+   "dropped_pct": 20.139228138739618,
+   "batch_size_mean": 7.107608695652174,
+   "batches_per_s": 30.66122348084296,
+   "latency_ms": {
+    "decode": {
+     "median": 35.75006099708844,
+     "p95": 39.012426903354935,
+     "n": 6539
+    },
+    "queue_wait": {
+     "median": 10.750757006462663,
+     "p95": 26.967306091682985,
+     "n": 6539
+    },
+    "preprocess_per_batch": {
+     "median": 14.238533498428296,
+     "p95": 26.888582939864133,
+     "n": 920
+    },
+    "infer_per_batch": {
+     "median": 12.65979050367605,
+     "p95": 14.63142504580901,
+     "n": 920
+    },
+    "postprocess_nms_per_batch": {
+     "median": 6.1452910013031214,
+     "p95": 8.874936647043796,
+     "n": 920
+    },
+    "track_per_batch": {
+     "median": 14.31626300472999,
+     "p95": 28.963274306443044,
+     "n": 920
+    },
+    "track_per_frame": {
+     "median": 1.7790880083339289,
+     "p95": 4.658862786891399,
+     "n": 6539
+    },
+    "batch_total": {
+     "median": 47.84257149003679,
+     "p95": 70.73972445505204,
+     "n": 920
+    },
+    "end_to_end": {
+     "median": 95.3611850127345,
+     "p95": 126.49468759773296,
+     "n": 6539
+    }
+   },
+   "gpu_util_pct": {
+    "mean": 94.55,
+    "max": 96.0
+   },
+   "cpu_cores_process": 2.383,
+   "cpu_util_system_pct": 22.8
+  },
+  {
+   "streams": 12,
+   "decoder": "nv",
+   "seconds": 30.0,
+   "engine_max_batch": 16,
+   "aggregate_fps": 234.52369964125677,
+   "per_stream_fps_min": 19.13596243702606,
+   "per_stream_fps_mean": 19.543641636771397,
+   "arrived_fps": 483.69057053867266,
+   "decoded_fps": 481.6937744582873,
+   "dropped_pct": 51.513692032475575,
+   "batch_size_mean": 11.823825503355705,
+   "batches_per_s": 19.834841065160926,
+   "latency_ms": {
+    "decode": {
+     "median": 35.7888250000542,
+     "p95": 39.30863120185677,
+     "n": 7047
+    },
+    "queue_wait": {
+     "median": 14.956090002669953,
+     "p95": 30.062354300753213,
+     "n": 7047
+    },
+    "preprocess_per_batch": {
+     "median": 22.042160504497588,
+     "p95": 34.5886739960406,
+     "n": 596
+    },
+    "infer_per_batch": {
+     "median": 21.274104008625727,
+     "p95": 24.033360245084623,
+     "n": 596
+    },
+    "postprocess_nms_per_batch": {
+     "median": 6.452837500546593,
+     "p95": 12.50172500658664,
+     "n": 596
+    },
+    "track_per_batch": {
+     "median": 25.716413503687363,
+     "p95": 47.77786599879619,
+     "n": 596
+    },
+    "track_per_frame": {
+     "median": 1.652114005992189,
+     "p95": 5.679435995989477,
+     "n": 7047
+    },
+    "batch_total": {
+     "median": 74.05507650400978,
+     "p95": 116.88955275167245,
+     "n": 596
+    },
+    "end_to_end": {
+     "median": 123.67431999882683,
+     "p95": 164.86141469795257,
+     "n": 7047
+    }
+   },
+   "gpu_util_pct": {
+    "mean": 94.40983606557377,
+    "max": 96.0
+   },
+   "cpu_cores_process": 3.1430000000000002,
+   "cpu_util_system_pct": 27.5
+  },
+  {
+   "streams": 4,
+   "decoder": "sw",
+   "seconds": 30.0,
+   "engine_max_batch": 16,
+   "aggregate_fps": 118.83417749760163,
+   "per_stream_fps_min": 29.258667370413413,
+   "per_stream_fps_mean": 29.708544374400407,
+   "arrived_fps": 120.03384950823362,
+   "decoded_fps": 120.00052528571605,
+   "dropped_pct": 0.9994447529150463,
+   "batch_size_mean": 1.7679722359940506,
+   "batches_per_s": 67.21495681790871,
+   "latency_ms": {
+    "decode": {
+     "median": 7.7682635019300506,
+     "p95": 12.702452004305087,
+     "n": 3566
+    },
+    "queue_wait": {
+     "median": 6.452486501075327,
+     "p95": 15.404261008370668,
+     "n": 3566
+    },
+    "preprocess_per_batch": {
+     "median": 6.473287008702755,
+     "p95": 9.51008919510059,
+     "n": 2017
+    },
+    "infer_per_batch": {
+     "median": 3.805540007306263,
+     "p95": 7.071069398079999,
+     "n": 2017
+    },
+    "postprocess_nms_per_batch": {
+     "median": 4.9743739946279675,
+     "p95": 5.667983402963728,
+     "n": 2017
+    },
+    "track_per_batch": {
+     "median": 2.984626989928074,
+     "p95": 7.2052550007356295,
+     "n": 2017
+    },
+    "track_per_frame": {
+     "median": 1.741410007525701,
+     "p95": 3.5806589949061163,
+     "n": 3566
+    },
+    "batch_total": {
+     "median": 17.796339001506567,
+     "p95": 26.62251300353091,
+     "n": 2017
+    },
+    "end_to_end": {
+     "median": 34.67032250773627,
+     "p95": 48.97516624623677,
+     "n": 3566
+    }
+   },
+   "gpu_util_pct": {
+    "mean": 93.1,
+    "max": 95.0
+   },
+   "cpu_cores_process": 2.198,
+   "cpu_util_system_pct": 22.6
+  },
+  {
+   "streams": 8,
+   "decoder": "sw",
+   "seconds": 30.0,
+   "engine_max_batch": 16,
+   "aggregate_fps": 230.5877658817754,
+   "per_stream_fps_min": 28.23183545849433,
+   "per_stream_fps_mean": 28.823470735221925,
+   "arrived_fps": 274.3187790122885,
+   "decoded_fps": 274.48543683671875,
+   "dropped_pct": 15.94167679222357,
+   "batch_size_mean": 6.4533582089552235,
+   "batches_per_s": 35.73143755785823,
+   "latency_ms": {
+    "decode": {
+     "median": 8.257498004240915,
+     "p95": 12.968388197623426,
+     "n": 6918
+    },
+    "queue_wait": {
+     "median": 10.355341008107644,
+     "p95": 27.75343770117615,
+     "n": 6918
+    },
+    "preprocess_per_batch": {
+     "median": 12.885040501714684,
+     "p95": 19.863877100578964,
+     "n": 1072
+    },
+    "infer_per_batch": {
+     "median": 11.202477006008849,
+     "p95": 13.340441146283409,
+     "n": 1072
+    },
+    "postprocess_nms_per_batch": {
+     "median": 5.621407006401569,
+     "p95": 6.99018959639943,
+     "n": 1072
+    },
+    "track_per_batch": {
+     "median": 10.883398004807532,
+     "p95": 24.00933354656445,
+     "n": 1072
+    },
+    "track_per_frame": {
+     "median": 1.5047620036057197,
+     "p95": 4.021008996642194,
+     "n": 6918
+    },
+    "batch_total": {
+     "median": 40.51443699427182,
+     "p95": 60.05170920252567,
+     "n": 1072
+    },
+    "end_to_end": {
+     "median": 61.246551500516944,
+     "p95": 90.42007684984128,
+     "n": 6918
+    }
+   },
+   "gpu_util_pct": {
+    "mean": 93.9,
+    "max": 96.0
+   },
+   "cpu_cores_process": 3.8310000000000004,
+   "cpu_util_system_pct": 30.5
+  }
+ ],
+ "machine": {
+  "gpu": "NVIDIA GB10, 580.159.03",
+  "cpu_cores": 20
+ }
+}
